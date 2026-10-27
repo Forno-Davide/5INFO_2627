@@ -5,13 +5,28 @@ family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet
 rel="stylesheet">
 </svelte:head>
 <script>
-export let counter = 0;
-function counter_incr() {
-counter += 2;
-}
-function counter_decr() {
-counter -= 3;
-}
+    import { createEventDispatcher } from 'svelte';
+    import {store_Dcounter} from '../js/store.js'
+    const dispatch = createEventDispatcher();
+    export let Dcounter = 0;
+    
+    function counter_incr() {
+    Dcounter += 2;
+    $store_Dcounter = Dcounter
+    emit_event('incr');
+    }
+    function counter_decr() {
+    Dcounter -= 3 ;
+    $store_Dcounter = Dcounter
+    emit_event('decr');
+    }
+
+    function emit_event(tipo){
+        dispatch('contatore',{
+            tipo:tipo,
+            valore:Dcounter
+        })
+    }
 </script>
 <style>
 .container {
@@ -54,7 +69,7 @@ font-family: 'Bungee Spice', cursive;
 </button>
 </div>
 <div class="number">
-{counter}
+{Dcounter}
 </div>
 <div class="pulsante">
 <button on:click={counter_incr}>
